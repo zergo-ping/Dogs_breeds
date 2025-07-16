@@ -5,8 +5,11 @@ from torchvision import transforms, models
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
+DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 # Загрузка данных
 labels_df = pd.read_csv('.\AI_Project\dog_breeds\labels.csv')  # Колонки: 'image_id', 'breed'
+
+path_of_file = '.\AI_Project\dog_breeds\\test\\f5174e3ab52edb2e414e135259047c48.jpg'
 
 # Создаем кодировщик и словарь
 le = LabelEncoder()
@@ -20,9 +23,9 @@ with open('idx_to_breed.pkl', 'wb') as f:
     pickle.dump(idx_to_breed, f)
 
 # Инициализация модели с правильным числом классов
-model = models.resnet18(pretrained=False)
+model = models.resnet18(pretrained=True)
 model.fc = torch.nn.Linear(model.fc.in_features, NUM_CLASSES) 
-model = model.to("cuda")
+model = model.to(DEVICE)
 
 # Загрузка весов
 try:
@@ -35,7 +38,6 @@ try:
     # Загрузка с обработкой несоответствий
     model.load_state_dict(checkpoint['model_state_dict'], strict=False)
 except:
-    # Если файл имеет старый формат
     pretrained_dict = torch.load('.\AI_Project\\best_dog_model.pth')
     model_dict = model.state_dict()
     pretrained_dict = {k: v for k, v in pretrained_dict.items() 
@@ -80,8 +82,8 @@ def test_single_image(model, image_path, transform, idx_to_breed, device='cuda')
 # Пример использования
 test_single_image(
     model,
-    '.\AI_Project\dog_breeds\\test\\f5174e3ab52edb2e414e135259047c48.jpg',
+    path_of_file,
     val_transform,
     idx_to_breed,
-    "cuda"
+    DEVICE
 )

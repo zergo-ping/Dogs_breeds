@@ -2,20 +2,10 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-
-from torchvision import transforms, models
-import os
-from PIL import Image
-import pandas as pd
-import numpy as np
 from tqdm import tqdm
-from sklearn.model_selection import train_test_split
 
 from Dataset import *
 from ML import *
-
-
-
 
 
 # Функция для вычисления точности
@@ -100,7 +90,7 @@ for epoch in range(EPOCHS):
         best_acc = val_acc
         torch.save(model.state_dict(), '.\AI_Project\\best_dog_model.pth')
         print('Model saved!')
-        epochs_no_improve = 0  # Сбрасываем счетчик
+        epochs_no_improve = 0  
     else:
         epochs_no_improve += 1
         print(f'No improvement for {epochs_no_improve} epochs')

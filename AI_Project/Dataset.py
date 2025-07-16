@@ -2,15 +2,12 @@
 import os
 from torch.utils.data import DataLoader, Dataset
 import torch
-import torch.nn as nn
-import torch.optim as optim
 
-from torchvision import transforms, models
+from torchvision import transforms
 import os
 from PIL import Image
 import pandas as pd
 import numpy as np
-from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 
 from ML import *
